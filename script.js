@@ -1,7 +1,3 @@
-/* =====================================================
-   ELEMENTOS
-===================================================== */
-
 const boton = document.getElementById("comenzar");
 const inicio = document.getElementById("inicio");
 const contenido = document.getElementById("contenido");
@@ -12,13 +8,8 @@ const final = document.getElementById("final");
 
 
 /* =====================================================
-   LETRA SINCRONIZADA
+   SINCRONIZACIÓN
 ===================================================== */
-
-/*
-   Puedes cambiar estos textos posteriormente si quieres.
-   Los tiempos están preparados para la canción.
-*/
 
 const letra = [
     {
@@ -31,7 +22,12 @@ const letra = [
     },
     {
         tiempo: 14,
+    
         texto: "Yo te cuidaré"
+    },
+    {
+        tiempo: 20,
+        texto: "Como en las pedas y todo lo demas"
     },
     {
         tiempo: 25,
@@ -44,6 +40,10 @@ const letra = [
     {
         tiempo: 46,
         texto: "Vámonos de viaje..."
+    },
+   {
+        tiempo: 53,
+        texto: "Llegar a un hotel a coger"
     },
     {
         tiempo: 59,
@@ -69,7 +69,7 @@ const letra = [
 
 
 /* =====================================================
-   COMENZAR
+   INICIAR
 ===================================================== */
 
 boton.addEventListener("click", async () => {
@@ -78,72 +78,55 @@ boton.addEventListener("click", async () => {
 
     contenido.classList.add("visible");
 
-    /*
-       El navegador permite reproducir audio
-       porque la reproducción ocurre directamente
-       después de pulsar el botón.
-    */
+    musica.volume = 0.85;
 
     try {
-
-        musica.volume = 0.8;
 
         await musica.play();
 
     } catch (error) {
 
         console.log(
-            "El navegador bloqueó la reproducción:",
+            "El navegador no pudo iniciar el audio:",
             error
         );
 
     }
 
-    /*
-       Llevar suavemente al usuario hacia el jardín.
-    */
-
-    setTimeout(() => {
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }, 300);
-
 });
 
 
 /* =====================================================
-   SINCRONIZAR LETRA
+   LETRA
 ===================================================== */
 
 musica.addEventListener("timeupdate", () => {
 
-    const tiempoActual = musica.currentTime;
+    const tiempo = musica.currentTime;
 
-    let textoActual = "";
+    let nuevoTexto = "";
 
     for (let i = 0; i < letra.length; i++) {
 
-        if (tiempoActual >= letra[i].tiempo) {
-            textoActual = letra[i].texto;
+        if (tiempo >= letra[i].tiempo) {
+            nuevoTexto = letra[i].texto;
         }
 
     }
 
-    if (textoLetra.textContent !== textoActual) {
+    if (textoLetra.textContent !== nuevoTexto) {
 
         textoLetra.style.opacity = "0";
-        textoLetra.style.transform = "translateY(8px)";
+        textoLetra.style.transform =
+            "translateY(10px)";
 
         setTimeout(() => {
 
-            textoLetra.textContent = textoActual;
+            textoLetra.textContent = nuevoTexto;
 
             textoLetra.style.opacity = "1";
-            textoLetra.style.transform = "translateY(0)";
+            textoLetra.style.transform =
+                "translateY(0)";
 
         }, 150);
 
@@ -153,7 +136,7 @@ musica.addEventListener("timeupdate", () => {
 
 
 /* =====================================================
-   FINAL
+   FINAL DE LA CANCIÓN
 ===================================================== */
 
 musica.addEventListener("ended", () => {
@@ -168,36 +151,31 @@ musica.addEventListener("ended", () => {
             behavior: "smooth"
         });
 
-    }, 300);
+    }, 400);
 
 });
 
 
 /* =====================================================
-   SI LA CANCIÓN ES MÁS LARGA
+   FINAL VISUAL ANTES DEL FINAL DEL AUDIO
 ===================================================== */
 
-let finalMostrado = false;
+let finalPreparado = false;
 
 musica.addEventListener("timeupdate", () => {
 
-    /*
-       Si llega aproximadamente al final previsto,
-       mostramos la pantalla final.
-    */
-
     if (
         musica.currentTime >= 89 &&
-        !finalMostrado
+        !finalPreparado
     ) {
 
-        finalMostrado = true;
+        finalPreparado = true;
 
         setTimeout(() => {
 
             final.classList.add("mostrar");
 
-        }, 3500);
+        }, 2500);
 
     }
 
@@ -205,26 +183,21 @@ musica.addEventListener("timeupdate", () => {
 
 
 /* =====================================================
-   CONTROL DE ERROR DEL AUDIO
-===================================================== */
-
-musica.addEventListener("error", () => {
-
-    console.error(
-        "No se pudo cargar musica.mp3"
-    );
-
-});
-
-
-/* =====================================================
-   COMPROBACIÓN
+   COMPROBACIONES
 ===================================================== */
 
 musica.addEventListener("canplaythrough", () => {
 
     console.log(
-        "✓ musica.mp3 cargado correctamente"
+        "✓ Música cargada correctamente"
+    );
+
+});
+
+musica.addEventListener("error", () => {
+
+    console.error(
+        "✕ No se pudo cargar musica.mp3"
     );
 
 });
