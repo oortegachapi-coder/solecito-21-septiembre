@@ -1,0 +1,784 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+/* =========================
+   PANTALLA INICIAL
+========================= */
+
+.inicio {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background:
+        radial-gradient(circle at 50% 20%, rgba(255, 214, 102, 0.16), transparent 30%),
+        linear-gradient(180deg, #101c3b 0%, #182955 45%, #332d52 100%);
+
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+.inicio.oculto {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.inicio::before,
+.inicio::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(2px);
+}
+
+.inicio::before {
+    width: 420px;
+    height: 420px;
+    background: rgba(255, 210, 90, 0.08);
+    top: -180px;
+    left: -120px;
+}
+
+.inicio::after {
+    width: 500px;
+    height: 500px;
+    background: rgba(130, 150, 255, 0.08);
+    bottom: -250px;
+    right: -150px;
+}
+
+.sol {
+    position: absolute;
+    width: 170px;
+    height: 170px;
+    border-radius: 50%;
+    background: #ffd76a;
+    opacity: 0.12;
+    filter: blur(20px);
+    top: 8%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: respirar 4s ease-in-out infinite;
+}
+
+.inicio-contenido {
+    position: relative;
+    z-index: 2;
+    width: min(90%, 650px);
+    text-align: center;
+    color: white;
+    animation: aparecer 1.4s ease both;
+}
+
+.flor-icono {
+    font-size: clamp(70px, 15vw, 120px);
+    margin-bottom: 15px;
+    animation: flotar 3s ease-in-out infinite;
+}
+
+.inicio h1 {
+    font-size: clamp(32px, 7vw, 58px);
+    font-weight: normal;
+    margin-bottom: 15px;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.inicio p {
+    font-family: Arial, sans-serif;
+    font-size: clamp(15px, 3vw, 20px);
+    opacity: 0.85;
+    margin-bottom: 35px;
+}
+
+#comenzar {
+    border: none;
+    border-radius: 50px;
+    padding: 16px 35px;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+    color: #5b3a00;
+    background: linear-gradient(135deg, #ffe18a, #ffc83d);
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.25),
+        0 0 30px rgba(255, 213, 82, 0.2);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+#comenzar:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.3),
+        0 0 40px rgba(255, 213, 82, 0.35);
+}
+
+#comenzar:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================
+   CONTENIDO PRINCIPAL
+========================= */
+
+.contenido {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            #101a38 0%,
+            #17264c 30%,
+            #27385d 55%,
+            #4c5b4d 78%,
+            #172918 100%
+        );
+
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.contenido.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* =========================
+   CIELO
+========================= */
+
+.cielo {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.luna {
+    position: absolute;
+    width: clamp(80px, 13vw, 135px);
+    height: clamp(80px, 13vw, 135px);
+    border-radius: 50%;
+
+    top: 8%;
+    right: 10%;
+
+    background: #fff4c2;
+
+    box-shadow:
+        0 0 30px rgba(255, 244, 194, 0.35),
+        0 0 80px rgba(255, 244, 194, 0.12);
+
+    animation: lunaBrillo 4s ease-in-out infinite;
+}
+
+.luna::before,
+.luna::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(210, 190, 135, 0.22);
+}
+
+.luna::before {
+    width: 20%;
+    height: 20%;
+    top: 25%;
+    left: 22%;
+}
+
+.luna::after {
+    width: 14%;
+    height: 14%;
+    bottom: 24%;
+    right: 25%;
+}
+
+.estrella {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: white;
+
+    box-shadow: 0 0 8px white;
+
+    animation: parpadear 2.5s ease-in-out infinite;
+}
+
+.e1 { top: 12%; left: 12%; }
+.e2 { top: 18%; left: 28%; animation-delay: .5s; }
+.e3 { top: 10%; left: 43%; animation-delay: 1s; }
+.e4 { top: 26%; left: 56%; animation-delay: .8s; }
+.e5 { top: 16%; left: 72%; animation-delay: 1.4s; }
+.e6 { top: 34%; left: 82%; animation-delay: .3s; }
+.e7 { top: 30%; left: 20%; animation-delay: 1.7s; }
+.e8 { top: 38%; left: 39%; animation-delay: .9s; }
+.e9 { top: 23%; left: 90%; animation-delay: 1.2s; }
+.e10 { top: 42%; left: 67%; animation-delay: .2s; }
+
+
+/* =========================
+   MENSAJE
+========================= */
+
+.mensaje {
+    position: absolute;
+    z-index: 20;
+
+    top: 10%;
+    left: 50%;
+
+    width: min(90%, 750px);
+
+    transform: translateX(-50%);
+
+    text-align: center;
+    color: #fff8df;
+
+    text-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(255, 220, 120, 0.12);
+
+    animation: mensajeEntrada 2s ease both;
+}
+
+.mensaje p {
+    font-size: clamp(18px, 4vw, 28px);
+    margin-bottom: 5px;
+}
+
+.mensaje strong {
+    color: #ffe083;
+}
+
+.mensaje h2 {
+    margin-top: 15px;
+    font-size: clamp(28px, 6vw, 48px);
+    color: #ffd85e;
+    font-weight: normal;
+}
+
+
+/* =========================
+   JARDÍN
+========================= */
+
+.jardin {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    width: 100%;
+    height: 55%;
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   GIRASOLES
+========================= */
+
+.girasol {
+    position: absolute;
+    bottom: 3%;
+
+    transform-origin: bottom center;
+
+    animation:
+        crecerFlor 2.2s cubic-bezier(.2, .8, .2, 1) both,
+        balanceo 5s ease-in-out 2.2s infinite;
+}
+
+.girasol1 {
+    left: 12%;
+    height: 360px;
+    z-index: 3;
+}
+
+.girasol2 {
+    left: 42%;
+    height: 430px;
+    z-index: 5;
+    animation-delay: .4s, 2.6s;
+}
+
+.girasol3 {
+    right: 10%;
+    height: 330px;
+    z-index: 4;
+    animation-delay: .8s, 3s;
+}
+
+.tallo {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    width: 20px;
+    height: 75%;
+
+    transform: translateX(-50%);
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #244d1e 0%,
+            #4f8a35 35%,
+            #6a9e42 55%,
+            #315d27 100%
+        );
+
+    box-shadow:
+        inset 2px 0 rgba(255, 255, 255, 0.12),
+        inset -3px 0 rgba(0, 0, 0, 0.18);
+}
+
+.flor {
+    position: absolute;
+    top: 0;
+    left: 50%;
+
+    width: clamp(100px, 16vw, 155px);
+    height: clamp(100px, 16vw, 155px);
+
+    transform: translateX(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.petalos {
+    font-size: clamp(100px, 16vw, 155px);
+    line-height: 1;
+
+    filter:
+        drop-shadow(0 8px 8px rgba(0, 0, 0, 0.25))
+        drop-shadow(0 0 12px rgba(255, 203, 48, 0.1));
+
+    animation: florBrillo 3s ease-in-out infinite;
+}
+
+
+/* =========================
+   HOJAS
+========================= */
+
+.hoja {
+    position: absolute;
+
+    width: 90px;
+    height: 48px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6c9d3c,
+            #315d28
+        );
+
+    border-radius: 100% 0 100% 0;
+
+    box-shadow:
+        inset 0 2px rgba(255, 255, 255, 0.12),
+        0 3px 5px rgba(0, 0, 0, 0.2);
+}
+
+.hoja::after {
+    content: "";
+    position: absolute;
+
+    width: 70%;
+    height: 2px;
+
+    background: rgba(190, 220, 130, 0.45);
+
+    top: 50%;
+    left: 15%;
+
+    transform: rotate(-12deg);
+}
+
+.hoja1 {
+    right: 5px;
+    top: 45%;
+
+    transform: rotate(25deg);
+}
+
+.hoja2 {
+    left: 5px;
+    top: 62%;
+
+    transform: scaleX(-1) rotate(20deg);
+}
+
+
+/* =========================
+   PASTO
+========================= */
+
+.jardin::after {
+    content: "";
+
+    position: absolute;
+    bottom: -5px;
+    left: -5%;
+
+    width: 110%;
+    height: 25%;
+
+    background:
+        linear-gradient(
+            180deg,
+            #29451e 0%,
+            #182d15 100%
+        );
+
+    border-radius: 50% 50% 0 0 / 25% 25% 0 0;
+
+    box-shadow:
+        0 -10px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+/* =========================
+   LETRAS
+========================= */
+
+.letra {
+    position: absolute;
+
+    left: 50%;
+    bottom: 7%;
+
+    width: min(90%, 850px);
+
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+#texto-letra {
+    min-height: 50px;
+
+    color: white;
+
+    font-family: Arial, sans-serif;
+    font-size: clamp(19px, 4vw, 31px);
+    font-weight: bold;
+
+    text-shadow:
+        0 3px 8px rgba(0, 0, 0, 0.8),
+        0 0 15px rgba(255, 220, 100, 0.2);
+
+    opacity: 0;
+
+    transform: translateY(15px);
+
+    transition:
+        opacity .5s ease,
+        transform .5s ease;
+}
+
+#texto-letra.mostrar {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* =========================
+   FINAL
+========================= */
+
+.final {
+    position: fixed;
+    inset: 0;
+
+    z-index: 200;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(255, 209, 75, 0.16),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #111d3c,
+            #25254c,
+            #3a2e48
+        );
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 2s ease,
+        visibility 2s ease;
+}
+
+.final.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.final > div {
+    font-size: clamp(80px, 18vw, 160px);
+
+    animation:
+        flotar 3s ease-in-out infinite,
+        girarSuave 8s linear infinite;
+}
+
+.final h1 {
+    font-size: clamp(30px, 7vw, 60px);
+    font-weight: normal;
+    color: #ffe078;
+
+    margin-top: 10px;
+}
+
+.final p {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    margin-top: 10px;
+    opacity: .85;
+}
+
+.final span {
+    margin-top: 20px;
+
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+
+    padding: 8px 18px;
+
+    border: 1px solid rgba(255, 224, 120, .5);
+    border-radius: 30px;
+
+    color: #ffe078;
+}
+
+
+/* =========================
+   ANIMACIONES
+========================= */
+
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes respirar {
+    0%, 100% {
+        transform: translateX(-50%) scale(1);
+        opacity: .10;
+    }
+
+    50% {
+        transform: translateX(-50%) scale(1.15);
+        opacity: .17;
+    }
+}
+
+@keyframes flotar {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes parpadear {
+    0%, 100% {
+        opacity: .25;
+        transform: scale(.7);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.4);
+    }
+}
+
+@keyframes lunaBrillo {
+    0%, 100% {
+        box-shadow:
+            0 0 30px rgba(255, 244, 194, .35),
+            0 0 80px rgba(255, 244, 194, .12);
+    }
+
+    50% {
+        box-shadow:
+            0 0 45px rgba(255, 244, 194, .5),
+            0 0 100px rgba(255, 244, 194, .18);
+    }
+}
+
+@keyframes mensajeEntrada {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
+
+@keyframes crecerFlor {
+    from {
+        transform: scaleY(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: scaleY(1);
+        opacity: 1;
+    }
+}
+
+@keyframes balanceo {
+    0%, 100% {
+        transform: rotate(-1deg);
+    }
+
+    50% {
+        transform: rotate(1deg);
+    }
+}
+
+@keyframes florBrillo {
+    0%, 100% {
+        filter:
+            drop-shadow(0 8px 8px rgba(0, 0, 0, .25))
+            brightness(1);
+    }
+
+    50% {
+        filter:
+            drop-shadow(0 8px 8px rgba(0, 0, 0, .25))
+            brightness(1.08);
+    }
+}
+
+@keyframes girarSuave {
+    from {
+        transform: rotate(-3deg);
+    }
+
+    50% {
+        transform: rotate(3deg);
+    }
+
+    to {
+        transform: rotate(-3deg);
+    }
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media (max-width: 600px) {
+
+    .mensaje {
+        top: 8%;
+    }
+
+    .mensaje p {
+        font-size: 17px;
+    }
+
+    .mensaje h2 {
+        font-size: 30px;
+    }
+
+    .girasol1 {
+        left: 3%;
+        height: 260px;
+    }
+
+    .girasol2 {
+        left: 34%;
+        height: 330px;
+    }
+
+    .girasol3 {
+        right: 2%;
+        height: 245px;
+    }
+
+    .tallo {
+        width: 14px;
+    }
+
+    .hoja {
+        width: 60px;
+        height: 35px;
+    }
+
+    .letra {
+        bottom: 11%;
+    }
+
+    #texto-letra {
+        font-size: 17px;
+    }
+
+    .luna {
+        top: 5%;
+        right: 7%;
+    }
+}
